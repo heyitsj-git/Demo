@@ -1,0 +1,528 @@
+<!-- payment.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - POP N' PLAN</title>
+  <link rel="icon" type="image/png" href="logo.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    /* Inherit all your root styles */
+    :root {
+      --accent-1: #cdb4db;
+      --accent-2: #ffc8dd;
+      --accent-3: #bde0fe;
+      --accent-4: #ffd6a5;
+      --accent-5: #fc76a9;
+      --accent-6: #6756ff;
+      --accent-7: #9c71ff;
+      --text: #17171a;
+      --muted: #6b6b74;
+      --success: #10b981;
+      --error: #ef4444;
+    }
+
+    body {
+      font-family: 'Saira', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f7f5ff, #fff);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .payment-container {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .back-btn:hover {
+      background: white;
+      transform: scale(1.1);
+    }
+
+    .payment-box {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(18, 18, 25, 0.1);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .payment-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-6), var(--accent-5), var(--accent-2));
+    }
+
+    .payment-box h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--accent-6), var(--accent-5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .plan-name {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .price {
+      font-size: 32px;
+      color: var(--accent-6);
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    .price-period {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .features-list {
+      text-align: left;
+      margin-bottom: 30px;
+      padding: 0 20px;
+    }
+
+    .features-list h4 {
+      color: var(--text);
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .features-list ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .features-list li {
+      padding: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .features-list li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .payment-methods {
+      margin-bottom: 30px;
+    }
+
+    .payment-methods h4 {
+      color: var(--text);
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+
+    .payment-options {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .payment-option {
+      padding: 10px 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .payment-option:hover {
+      border-color: var(--accent-6);
+      background: #f8f9ff;
+    }
+
+    .payment-option.selected {
+      border-color: var(--accent-6);
+      background: linear-gradient(135deg, var(--accent-6), var(--accent-5));
+      color: white;
+    }
+
+    #pay-btn {
+      padding: 15px 40px;
+      background: linear-gradient(145deg, var(--accent-5), var(--accent-2));
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 16px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    #pay-btn:hover:not(:disabled) {
+      background: var(--accent-5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(252, 118, 169, 0.3);
+    }
+
+    #pay-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .loading {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+    }
+
+    .loading.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5e7eb;
+      border-top: 2px solid var(--accent-6);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .error-message {
+      background: #fef2f2;
+      color: var(--error);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .success-message {
+      background: #f0fdf4;
+      color: var(--success);
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .security-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 15px;
+    }
+
+    .security-badge::before {
+      content: '🔒';
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.history.back()">←</button>
+  
+  <div class="payment-container">
+    <div class="payment-box">
+      <h2>Complete Your Purchase</h2>
+      <div class="plan-name" id="plan-name">Loading...</div>
+      <div class="price" id="selected-price">Loading...</div>
+      <div class="price-period" id="price-period">per month</div>
+      
+      <div class="error-message" id="error-message"></div>
+      <div class="success-message" id="success-message"></div>
+      
+      <div class="features-list" id="features-list">
+        <h4>What's included:</h4>
+        <ul id="features-ul">
+          <!-- Features will be loaded here -->
+        </ul>
+      </div>
+      
+      <div class="payment-methods">
+        <h4>Choose Payment Method</h4>
+        <div class="payment-options">
+          <div class="payment-option selected" data-method="card">
+            💳 Card
+          </div>
+          <div class="payment-option" data-method="upi">
+            📱 UPI
+          </div>
+          <div class="payment-option" data-method="netbanking">
+            🏦 Net Banking
+          </div>
+        </div>
+      </div>
+      
+      <button id="pay-btn">Proceed to Payment</button>
+      
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <span>Processing...</span>
+      </div>
+      
+      <div class="security-badge">
+        Secured by Stripe • 256-bit SSL encryption
+      </div>
+    </div>
+  </div>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    // Initialize Stripe with your publishable key
+    const stripe = Stripe("pk_test_51234567890abcdef"); // Replace with your actual Stripe publishable key
+    
+    // Get plan from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'standard';
+    
+    // Plan configurations
+    const plans = {
+      free: {
+        name: 'Free Starter',
+        price: 0,
+        features: [
+          'Register & Join Events',
+          'Basic Profile Management',
+          'Attendee Access',
+          'Limited Committee Tools',
+          'No Event Reports'
+        ]
+      },
+      standard: {
+        name: 'Standard Access',
+        price: 499,
+        features: [
+          'Committee Registration',
+          'Manage Members & Roles',
+          'Event Reports',
+          'Email Notifications',
+          'Basic Analytics'
+        ]
+      },
+      premium: {
+        name: 'Premium Pro',
+        price: 999,
+        features: [
+          'Unlock All Features',
+          'Unlimited Committees',
+          'Analytics Dashboard',
+          'Custom Branding',
+          '24/7 Priority Support'
+        ]
+      },
+      custom: {
+        name: 'Custom Flex',
+        price: 1499,
+        features: [
+          'Build Your Own Plan',
+          'Choose Needed Features',
+          'Flexible Pricing',
+          'Dedicated Account Manager',
+          'Tailored for Institutions'
+        ]
+      }
+    };
+    
+    // DOM elements
+    const planNameEl = document.getElementById('plan-name');
+    const priceEl = document.getElementById('selected-price');
+    const pricePeriodEl = document.getElementById('price-period');
+    const featuresUl = document.getElementById('features-ul');
+    const payBtn = document.getElementById('pay-btn');
+    const loadingEl = document.getElementById('loading');
+    const errorEl = document.getElementById('error-message');
+    const successEl = document.getElementById('success-message');
+    
+    // Initialize page
+    function initializePage() {
+      const planData = plans[plan];
+      
+      if (!planData) {
+        showError('Invalid plan selected');
+        return;
+      }
+      
+      // Update plan information
+      planNameEl.textContent = planData.name;
+      priceEl.textContent = `₹${planData.price}`;
+      
+      if (planData.price === 0) {
+        pricePeriodEl.textContent = 'forever';
+        payBtn.textContent = 'Get Started Free';
+      } else {
+        pricePeriodEl.textContent = 'per month';
+        payBtn.textContent = `Pay ₹${planData.price}`;
+      }
+      
+      // Update features list
+      featuresUl.innerHTML = '';
+      planData.features.forEach(feature => {
+        const li = document.createElement('li');
+        li.textContent = feature;
+        featuresUl.appendChild(li);
+      });
+    }
+    
+    // Payment method selection
+    document.querySelectorAll('.payment-option').forEach(option => {
+      option.addEventListener('click', () => {
+        document.querySelectorAll('.payment-option').forEach(opt => opt.classList.remove('selected'));
+        option.classList.add('selected');
+      });
+    });
+    
+    // Payment processing
+    payBtn.addEventListener('click', async () => {
+      const planData = plans[plan];
+      
+      if (!planData) {
+        showError('Invalid plan selected');
+        return;
+      }
+      
+      // Show loading state
+      setLoading(true);
+      hideMessages();
+      
+      try {
+        if (planData.price === 0) {
+          // Free plan - redirect to success
+          showSuccess('Free plan activated! Redirecting...');
+          setTimeout(() => {
+            window.location.href = `success.html?plan=${plan}`;
+          }, 2000);
+          return;
+        }
+        
+        // Create payment session
+        const response = await fetch('/api/payment/create-checkout-session', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            plan: plan,
+            userId: getUserId() // You might want to get this from localStorage or session
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+          throw new Error(data.message || 'Payment processing failed');
+        }
+        
+        // Redirect to Stripe Checkout
+        const { error } = await stripe.redirectToCheckout({
+          sessionId: data.sessionId
+        });
+        
+        if (error) {
+          throw new Error(error.message);
+        }
+        
+      } catch (error) {
+        console.error('Payment error:', error);
+        showError(error.message || 'Something went wrong. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+    });
+    
+    // Helper functions
+    function setLoading(loading) {
+      if (loading) {
+        payBtn.disabled = true;
+        loadingEl.classList.add('show');
+      } else {
+        payBtn.disabled = false;
+        loadingEl.classList.remove('show');
+      }
+    }
+    
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.classList.add('show');
+      successEl.classList.remove('show');
+    }
+    
+    function showSuccess(message) {
+      successEl.textContent = message;
+      successEl.classList.add('show');
+      errorEl.classList.remove('show');
+    }
+    
+    function hideMessages() {
+      errorEl.classList.remove('show');
+      successEl.classList.remove('show');
+    }
+    
+    function getUserId() {
+      // Try to get user ID from localStorage or return anonymous
+      return localStorage.getItem('userId') || 'anonymous';
+    }
+    
+    // Initialize page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+</body>
+</html>

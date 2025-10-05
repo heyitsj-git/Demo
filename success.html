@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Successful - POP N' PLAN</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent-1: #cdb4db;
+      --accent-2: #ffc8dd;
+      --accent-3: #bde0fe;
+      --accent-4: #ffd6a5;
+      --accent-5: #fc76a9;
+      --accent-6: #6756ff;
+      --accent-7: #9c71ff;
+      --text: #17171a;
+      --muted: #6b6b74;
+      --success: #10b981;
+      --error: #ef4444;
+    }
+
+    body {
+      font-family: 'Saira', sans-serif;
+      margin: 0;
+      background: linear-gradient(135deg, #f7f5ff, #fff);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .success-container {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .success-box {
+      background: #fff;
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(18, 18, 25, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .success-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--success), var(--accent-6));
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--success), #34d399);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 30px;
+      font-size: 40px;
+      color: white;
+      animation: successPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes successPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .success-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, var(--success), var(--accent-6));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .success-subtitle {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .plan-info {
+      background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+      border: 2px solid #bbf7d0;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .plan-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 10px;
+    }
+
+    .plan-price {
+      font-size: 20px;
+      color: var(--muted);
+      margin-bottom: 15px;
+    }
+
+    .plan-features {
+      text-align: left;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .plan-features li {
+      padding: 8px 0;
+      color: var(--text);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .plan-features li::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .next-steps {
+      background: #f8f9ff;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .next-steps h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: var(--text);
+    }
+
+    .next-steps ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: left;
+    }
+
+    .next-steps li {
+      padding: 8px 0;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .next-steps li::before {
+      content: '→';
+      color: var(--accent-6);
+      font-weight: bold;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-6), var(--accent-5));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(103, 86, 255, 0.3);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: var(--accent-6);
+      border: 2px solid var(--accent-6);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent-6);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: var(--accent-5);
+      animation: confetti-fall 3s linear infinite;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .session-info {
+      background: #f1f5f9;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="confetti" id="confetti"></div>
+  
+  <div class="success-container">
+    <div class="success-box">
+      <div class="success-icon">✓</div>
+      <h1 class="success-title">Payment Successful!</h1>
+      <p class="success-subtitle">Welcome to your new plan. You're all set to get started!</p>
+      
+      <div class="plan-info" id="plan-info">
+        <div class="plan-name" id="plan-name">Loading...</div>
+        <div class="plan-price" id="plan-price">Loading...</div>
+        <ul class="plan-features" id="plan-features">
+          <!-- Features will be loaded here -->
+        </ul>
+      </div>
+      
+      <div class="next-steps">
+        <h3>What's Next?</h3>
+        <ul>
+          <li>Access your dashboard to manage your account</li>
+          <li>Explore all the features included in your plan</li>
+          <li>Set up your profile and preferences</li>
+          <li>Start creating and managing events</li>
+        </ul>
+      </div>
+      
+      <div class="action-buttons">
+        <a href="dash.html" class="btn btn-primary">
+          🚀 Go to Dashboard
+        </a>
+        <a href="plans.html" class="btn btn-secondary">
+          📋 View All Plans
+        </a>
+      </div>
+      
+      <div class="session-info" id="session-info" style="display: none;">
+        <strong>Session ID:</strong> <span id="session-id"></span><br>
+        <strong>Plan:</strong> <span id="plan-id"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Plan configurations
+    const plans = {
+      free: {
+        name: 'Free Starter',
+        price: '₹0',
+        period: 'forever',
+        features: [
+          'Register & Join Events',
+          'Basic Profile Management',
+          'Attendee Access',
+          'Limited Committee Tools',
+          'No Event Reports'
+        ]
+      },
+      standard: {
+        name: 'Standard Access',
+        price: '₹499',
+        period: 'per month',
+        features: [
+          'Committee Registration',
+          'Manage Members & Roles',
+          'Event Reports',
+          'Email Notifications',
+          'Basic Analytics'
+        ]
+      },
+      premium: {
+        name: 'Premium Pro',
+        price: '₹999',
+        period: 'per month',
+        features: [
+          'Unlock All Features',
+          'Unlimited Committees',
+          'Analytics Dashboard',
+          'Custom Branding',
+          '24/7 Priority Support'
+        ]
+      },
+      custom: {
+        name: 'Custom Flex',
+        price: '₹1499+',
+        period: 'per month',
+        features: [
+          'Build Your Own Plan',
+          'Choose Needed Features',
+          'Flexible Pricing',
+          'Dedicated Account Manager',
+          'Tailored for Institutions'
+        ]
+      }
+    };
+
+    // Get plan from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const plan = urlParams.get('plan') || 'standard';
+    const sessionId = urlParams.get('session_id');
+
+    // Initialize page
+    function initializePage() {
+      const planData = plans[plan];
+      
+      if (!planData) {
+        console.error('Invalid plan:', plan);
+        return;
+      }
+
+      // Update plan information
+      document.getElementById('plan-name').textContent = planData.name;
+      document.getElementById('plan-price').textContent = `${planData.price} ${planData.period}`;
+      
+      // Update features
+      const featuresUl = document.getElementById('plan-features');
+      featuresUl.innerHTML = '';
+      planData.features.forEach(feature => {
+        const li = document.createElement('li');
+        li.textContent = feature;
+        featuresUl.appendChild(li);
+      });
+
+      // Show session info if available
+      if (sessionId) {
+        document.getElementById('session-id').textContent = sessionId;
+        document.getElementById('plan-id').textContent = plan;
+        document.getElementById('session-info').style.display = 'block';
+      }
+    }
+
+    // Create confetti animation
+    function createConfetti() {
+      const confettiContainer = document.getElementById('confetti');
+      const colors = ['#fc76a9', '#6756ff', '#cdb4db', '#ffc8dd', '#bde0fe'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 3 + 's';
+        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        confettiContainer.appendChild(confetti);
+      }
+    }
+
+    // Initialize page when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      initializePage();
+      createConfetti();
+    });
+  </script>
+</body>
+</html>
+

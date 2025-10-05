@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Member Dashboard - POP N' PLAN</title>
+  <link rel="icon" href="logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Saira:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #667eea;
+      --secondary: #764ba2;
+      --success: #4ade80;
+      --danger: #f87171;
+      --dark: #1f2937;
+      --light: #f8fafc;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --border: #e5e7eb;
+      --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --border-radius: 8px;
+      --transition: all 0.2s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Saira', sans-serif;
+      background: #f8fafc;
+      min-height: 100vh;
+      color: var(--dark);
+    }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      height: 100vh;
+      z-index: 1000;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .profile-section:hover {
+      background: var(--light);
+    }
+
+    .profile-pic {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile-info h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin: 0;
+    }
+
+    .profile-info p {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin: 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius);
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar-nav {
+      padding: 20px 0;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      color: var(--gray);
+      text-decoration: none;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+
+    .nav-item:hover {
+      background: var(--light);
+      color: var(--primary);
+    }
+
+    .nav-item.active {
+      background: rgba(102, 126, 234, 0.1);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+
+    .main-content {
+      flex: 1;
+      margin-left: 280px;
+    }
+
+    .main-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .header-left p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .search-container {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 10px 40px 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      font-size: 14px;
+    }
+
+    .search-container .material-icons {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .notification-btn {
+      position: relative;
+      background: none;
+      border: none;
+      padding: 10px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: var(--danger);
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-menu-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .user-menu-btn img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+
+    .content-area {
+      padding: 30px;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .stat-info h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .stat-info p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .event-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .event-image {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .event-content {
+      padding: 20px;
+    }
+
+    .event-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    .event-description {
+      color: var(--gray);
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--gray);
+    }
+
+    .empty-state .material-icons {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #ccc;
+    }
+
+    .empty-state h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--dark);
+    }
+
+    /* Committees */
+    .committees-header {
+      margin-bottom: 25px;
+    }
+
+    .committees-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .committees-header p {
+      color: var(--gray);
+    }
+
+    .committees-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .committee-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .committee-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .committee-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .committee-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .member-count {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .committee-description {
+      color: var(--gray);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .committee-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Messages */
+    .messages-container {
+      display: flex;
+      height: 600px;
+      background: var(--white);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .messages-sidebar {
+      width: 300px;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .messages-header h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .messages-list {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .message-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      border-bottom: 1px solid var(--light);
+    }
+
+    .message-item:hover {
+      background: var(--light);
+    }
+
+    .message-item.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .message-item.active .message-info h4,
+    .message-item.active .message-info p {
+      color: white;
+    }
+
+    .message-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .message-info {
+      flex: 1;
+    }
+
+    .message-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: var(--dark);
+    }
+
+    .message-info p {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .message-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .message-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .message-info img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .message-info h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .message-info p {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .message-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f8f9fa;
+    }
+
+    .message-bubble {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin-bottom: 10px;
+      word-wrap: break-word;
+    }
+
+    .message-bubble.sent {
+      background: var(--primary);
+      color: white;
+      margin-left: auto;
+      text-align: right;
+    }
+
+    .message-bubble.received {
+      background: var(--white);
+      color: var(--dark);
+      border: 1px solid var(--border);
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      color: var(--gray);
+      margin-top: 4px;
+    }
+
+    .message-input-container {
+      display: flex;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      gap: 10px;
+    }
+
+    .message-input-container input {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      outline: none;
+    }
+
+    .message-input-container button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Profile */
+    .profile-container {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .profile-avatar-large {
+      position: relative;
+    }
+
+    .profile-avatar-large img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    .edit-avatar-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--dark);
+    }
+
+    .profile-info p {
+      color: var(--gray);
+      margin-bottom: 3px;
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-item h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 5px;
+    }
+
+    .stat-item p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .profile-details h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .profile-form {
+      background: var(--light);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid var(--border);
+      border-radius: var(--border-radius);
+      font-size: 14px;
+      transition: var(--transition);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* Recent Activity */
+    .recent-activity {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      margin-top: 20px;
+    }
+
+    .recent-activity h3 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--dark);
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      background: var(--light);
+      border-radius: var(--border-radius);
+    }
+
+    .activity-item .material-icons {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .activity-item p {
+      margin: 0;
+      font-weight: 500;
+      color: var(--dark);
+    }
+
+    .activity-item small {
+      color: var(--gray);
+      font-size: 0.8rem;
+    }
+
+    /* Achievements */
+    .achievements-header {
+      margin-bottom: 25px;
+    }
+
+    .achievements-header h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .achievements-header p {
+      color: var(--gray);
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .badge-card {
+      background: var(--white);
+      border-radius: var(--border-radius);
+      padding: 25px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .badge-card.earned {
+      border: 2px solid var(--primary);
+    }
+
+    .badge-card.not-earned {
+      opacity: 0.6;
+      background: #f8f9fa;
+    }
+
+    .badge-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+    }
+
+    .badge-card.earned .badge-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+    }
+
+    .badge-card.not-earned .badge-icon {
+      background: #ccc;
+    }
+
+    .badge-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--dark);
+    }
+
+    .badge-description {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    .badge-date {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .badge-requirement {
+      font-size: 0.8rem;
+      color: var(--gray);
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(-100%);
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <img src="logo.png" alt="POP N' PLAN Logo">
+          <h1>POP N' PLAN</h1>
+        </div>
+        <div class="profile-section" onclick="dashboard.openProfile()">
+          <img src="https://i.pravatar.cc/150?img=1" alt="Profile" class="profile-pic">
+          <div class="profile-info">
+            <h3 id="sidebar-name">John Doe</h3>
+            <p id="sidebar-role">Committee Member</p>
+          </div>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-tab="overview">
+          <span class="material-icons">dashboard</span>
+          <span>Overview</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="events">
+          <span class="material-icons">event</span>
+          <span>Events</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="committees">
+          <span class="material-icons">groups</span>
+          <span>Committees</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="achievements">
+          <span class="material-icons">emoji_events</span>
+          <span>Achievements</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="messages">
+          <span class="material-icons">message</span>
+          <span>Messages</span>
+        </a>
+        <a href="#" class="nav-item" data-tab="profile">
+          <span class="material-icons">person</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="main-header">
+        <div class="header-left">
+          <h2 id="page-title">Dashboard Overview</h2>
+          <p id="page-subtitle">Welcome back, <span id="user-name">Member</span>!</p>
+        </div>
+        
+        <div class="header-right">
+          <div class="search-container">
+            <input type="text" id="global-search" placeholder="Search events, committees, members...">
+            <span class="material-icons">search</span>
+          </div>
+          
+          <div class="notification-btn">
+            <span class="material-icons">notifications</span>
+            <div class="notification-badge" id="notification-count">3</div>
+          </div>
+          
+          <div class="user-menu-btn">
+            <img id="user-avatar" src="https://i.pravatar.cc/150?img=1" alt="User Avatar">
+            <span class="material-icons">arrow_drop_down</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Overview Tab -->
+        <div class="tab-content active" id="overview-content">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span class="material-icons">event</span>
+              </div>
+              <div class="stat-info">
+                <h3 id="upcoming-events-count">0</h3>
+                <p>Upcoming Events</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span class="material-icons">groups</span>
+              </div>
+              <div class="stat-info">
+                <h3 id="joined-committees-count">0</h3>
+                <p>Joined Committees</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span class="material-icons">emoji_events</span>
+              </div>
+              <div class="stat-info">
+                <h3 id="achievements-count">0</h3>
+                <p>Achievements</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">
+                <span class="material-icons">message</span>
+              </div>
+              <div class="stat-info">
+                <h3 id="unread-messages-count">0</h3>
+                <p>Unread Messages</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Events Tab -->
+        <div class="tab-content" id="events-content">
+          <div class="events-grid" id="events-grid">
+            <div class="empty-state">
+              <span class="material-icons">event</span>
+              <h3>No events found</h3>
+              <p>Check back later for upcoming events</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Committees Tab -->
+        <div class="tab-content" id="committees-content">
+          <div class="committees-header">
+            <h3>Available Committees</h3>
+            <p>Join committees to participate in events and collaborate with other members</p>
+          </div>
+          <div class="committees-grid" id="committees-grid">
+            <!-- Committees will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Achievements Tab -->
+        <div class="tab-content" id="achievements-content">
+          <div class="achievements-header">
+            <h3>Your Badges</h3>
+            <p>Badges are awarded by administrators for various achievements and contributions</p>
+          </div>
+          <div class="badges-grid" id="badges-grid">
+            <!-- Badges will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Messages Tab -->
+        <div class="tab-content" id="messages-content">
+          <div class="messages-container">
+            <div class="messages-sidebar">
+              <div class="messages-header">
+                <h3>Messages</h3>
+              </div>
+              <div class="messages-list" id="messages-list">
+                <!-- Message list will be loaded here -->
+              </div>
+            </div>
+            <div class="message-area">
+              <div class="message-header" id="message-header">
+                <div class="message-info">
+                  <img id="message-avatar" src="https://i.pravatar.cc/150?img=10" alt="Admin">
+                  <div>
+                    <h4 id="message-name">Admin Support</h4>
+                    <p id="message-status">Online</p>
+                  </div>
+                </div>
+              </div>
+              <div class="message-messages" id="message-messages">
+                <!-- Messages will be loaded here -->
+              </div>
+              <div class="message-input-container">
+                <input type="text" id="message-input" placeholder="Type a message to admin...">
+                <button id="send-message-btn">
+                  <span class="material-icons">send</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div class="tab-content" id="profile-content">
+          <div class="profile-container">
+            <div class="profile-header">
+              <div class="profile-avatar-large">
+                <img id="profile-avatar" src="https://i.pravatar.cc/150?img=1" alt="Profile">
+                <button class="edit-avatar-btn" onclick="dashboard.editAvatar()">
+                  <span class="material-icons">camera_alt</span>
+                </button>
+              </div>
+              <div class="profile-info">
+                <h2 id="profile-name">John Doe</h2>
+                <p id="profile-role">Committee Member</p>
+                <p id="profile-email">john.doe@example.com</p>
+              </div>
+              <button class="btn btn-primary" onclick="dashboard.editProfile()">Edit Profile</button>
+            </div>
+            
+            <div class="profile-stats">
+              <div class="stat-item">
+                <h4 id="profile-events-count">12</h4>
+                <p>Events Attended</p>
+              </div>
+              <div class="stat-item">
+                <h4 id="profile-committees-count">2</h4>
+                <p>Committees Joined</p>
+              </div>
+              <div class="stat-item">
+                <h4 id="profile-achievements-count">5</h4>
+                <p>Achievements</p>
+              </div>
+            </div>
+
+            <div class="profile-details">
+              <h3>Personal Information</h3>
+              <div class="profile-form" id="profile-form" style="display: none;">
+                <div class="form-group">
+                  <label>Full Name</label>
+                  <input type="text" id="edit-name" value="John Doe">
+                </div>
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" id="edit-email" value="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                  <label>Phone</label>
+                  <input type="tel" id="edit-phone" value="+1 234 567 8900">
+                </div>
+                <div class="form-group">
+                  <label>Bio</label>
+                  <textarea id="edit-bio" rows="3">Active member of the tech committee, passionate about web development and event organization.</textarea>
+                </div>
+                <div class="form-actions">
+                  <button class="btn btn-primary" onclick="dashboard.saveProfile()">Save Changes</button>
+                  <button class="btn btn-outline" onclick="dashboard.cancelEdit()">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Simple dashboard functionality
+    class MemberDashboard {
+      constructor() {
+        this.currentTab = 'overview';
+        this.init();
+      }
+
+      init() {
+        this.setupEventListeners();
+        this.loadMockData();
+      }
+
+      setupEventListeners() {
+        // Tab navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tab = item.dataset.tab;
+            this.switchTab(tab);
+          });
+        });
+
+        // Search functionality
+        document.getElementById('global-search').addEventListener('input', (e) => {
+          console.log('Searching for:', e.target.value);
+        });
+      }
+
+      switchTab(tab) {
+        // Update navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+        // Update content
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.classList.remove('active');
+        });
+        document.getElementById(`${tab}-content`).classList.add('active');
+
+        // Update page title
+        const titles = {
+          overview: 'Dashboard Overview',
+          events: 'Upcoming Events',
+          committees: 'Committees',
+          achievements: 'Achievements',
+          messages: 'Messages',
+          profile: 'Profile Settings'
+        };
+        
+        document.getElementById('page-title').textContent = titles[tab];
+        this.currentTab = tab;
+      }
+
+      loadMockData() {
+        // Load events
+        this.loadEvents();
+        
+        // Load committees
+        this.loadCommittees();
+        
+        // Load messages
+        this.loadMessages();
+        
+        // Load profile
+        this.loadProfile();
+        
+        // Load achievements
+        this.loadAchievements();
+        
+        // Initialize messaging
+        this.initializeMessaging();
+        
+        // Check badge eligibility
+        this.checkBadgeEligibility();
+        
+        // Update stats
+        this.updateStats();
+      }
+
+      async loadEvents() {
+        try {
+          const response = await fetch('/api/events');
+          if (response.ok) {
+            const events = await response.json();
+            this.renderEvents(events);
+          } else {
+            this.renderMockEvents();
+          }
+        } catch (error) {
+          console.error('Error loading events:', error);
+          this.renderMockEvents();
+        }
+      }
+
+      renderEvents(events) {
+        const container = document.getElementById('events-grid');
+        if (!container) return;
+
+        if (events.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <span class="material-icons">event</span>
+              <h3>No events found</h3>
+              <p>Check back later for upcoming events</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = events.map(event => `
+          <div class="event-card">
+            <div class="event-image">
+              <img src="${event.image || 'https://via.placeholder.com/400x200?text=Event+Image'}" alt="${event.title}">
+            </div>
+            <div class="event-content">
+              <h3 class="event-title">${event.title}</h3>
+              <p class="event-description">${event.description || 'No description available'}</p>
+              <div style="margin-top: 15px;">
+                <button class="btn btn-primary" onclick="dashboard.registerForEvent('${event._id || event.id}')">
+                  Register
+                </button>
+                <button class="btn btn-outline" onclick="dashboard.viewEventDetails('${event._id || event.id}')">
+                  Details
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderMockEvents() {
+        const mockEvents = [
+          {
+            id: '1',
+            title: 'Tech Workshop: Web Development',
+            description: 'Learn modern web development techniques and best practices',
+            image: 'https://via.placeholder.com/400x200?text=Tech+Workshop'
+          },
+          {
+            id: '2',
+            title: 'Cultural Night',
+            description: 'Annual cultural night with performances and competitions',
+            image: 'https://via.placeholder.com/400x200?text=Cultural+Night'
+          }
+        ];
+
+        this.renderEvents(mockEvents);
+      }
+
+      registerForEvent(eventId) {
+        localStorage.setItem('selectedEventId', eventId);
+        window.location.href = 'regi.html';
+      }
+
+      viewEventDetails(eventId) {
+        alert('Event details for ID: ' + eventId);
+      }
+
+      updateStats() {
+        // Update stats with real-time data
+        this.updateEventCount();
+        this.updateCommitteeCount();
+        this.updateBadgeCount();
+        this.updateMessageCount();
+      }
+
+      updateEventCount() {
+        const eventCount = this.getJoinedEvents().length;
+        document.getElementById('upcoming-events-count').textContent = eventCount;
+      }
+
+      updateCommitteeCount() {
+        const committeeCount = this.getJoinedCommittees().length;
+        document.getElementById('joined-committees-count').textContent = committeeCount;
+      }
+
+      updateBadgeCount() {
+        const badgeCount = this.getEarnedBadges().length;
+        document.getElementById('achievements-count').textContent = badgeCount;
+      }
+
+      updateMessageCount() {
+        const messageCount = this.getUnreadMessages();
+        document.getElementById('unread-messages-count').textContent = messageCount;
+      }
+
+      getJoinedEvents() {
+        return JSON.parse(localStorage.getItem('joinedEvents') || '[]');
+      }
+
+      getJoinedCommittees() {
+        return JSON.parse(localStorage.getItem('joinedCommittees') || '[]');
+      }
+
+      getEarnedBadges() {
+        return JSON.parse(localStorage.getItem('earnedBadges') || '[]');
+      }
+
+      getUnreadMessages() {
+        return parseInt(localStorage.getItem('unreadMessages') || '0');
+      }
+
+      async loadCommittees() {
+        try {
+          const response = await fetch('/api/committees');
+          if (response.ok) {
+            const committees = await response.json();
+            this.renderCommittees(committees);
+          } else {
+            this.renderMockCommittees();
+          }
+        } catch (error) {
+          console.error('Error loading committees:', error);
+          this.renderMockCommittees();
+        }
+      }
+
+      renderCommittees(committees) {
+        const container = document.getElementById('committees-grid');
+        if (!container) return;
+
+        if (committees.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <span class="material-icons">groups</span>
+              <h3>No committees available</h3>
+              <p>Committees will be listed here when available</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = committees.map(committee => `
+          <div class="committee-card">
+            <div class="committee-header">
+              <h3>${committee.name}</h3>
+              <span class="member-count">${committee.memberCount || 0} members</span>
+            </div>
+            <p class="committee-description">${committee.description || 'No description available'}</p>
+            <div class="committee-actions">
+              <button class="btn btn-primary" onclick="dashboard.joinCommittee('${committee._id || committee.id}')">
+                Join Committee
+              </button>
+              <button class="btn btn-outline" onclick="dashboard.viewCommitteeDetails('${committee._id || committee.id}')">
+                View Details
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderMockCommittees() {
+        const mockCommittees = [
+          {
+            id: '1',
+            name: 'Tech Committee',
+            description: 'Responsible for organizing tech events, workshops, and hackathons. We focus on promoting technology and innovation within the community.',
+            memberCount: 15
+          },
+          {
+            id: '2',
+            name: 'Cultural Committee',
+            description: 'Organizes cultural events, festivals, and performances. We celebrate diversity and promote cultural awareness.',
+            memberCount: 22
+          },
+          {
+            id: '3',
+            name: 'Sports Committee',
+            description: 'Manages sports events, tournaments, and fitness activities. We promote healthy living and team spirit.',
+            memberCount: 18
+          },
+          {
+            id: '4',
+            name: 'Social Welfare Committee',
+            description: 'Organizes community service activities, charity events, and social awareness campaigns.',
+            memberCount: 12
+          }
+        ];
+
+        this.renderCommittees(mockCommittees);
+      }
+
+      joinCommittee(committeeId) {
+        const joinedCommittees = this.getJoinedCommittees();
+        if (!joinedCommittees.includes(committeeId)) {
+          joinedCommittees.push(committeeId);
+          localStorage.setItem('joinedCommittees', JSON.stringify(joinedCommittees));
+          this.updateCommitteeCount();
+          this.addActivity('Joined a new committee!', 'groups');
+          alert('Successfully joined the committee!');
+        } else {
+          alert('You are already a member of this committee!');
+        }
+      }
+
+      viewCommitteeDetails(committeeId) {
+        alert('Committee details for ID: ' + committeeId);
+      }
+
+      async loadMessages() {
+        try {
+          const response = await fetch('/api/messages');
+          if (response.ok) {
+            const messages = await response.json();
+            this.renderMessages(messages);
+          } else {
+            this.renderMockMessages();
+          }
+        } catch (error) {
+          console.error('Error loading messages:', error);
+          this.renderMockMessages();
+        }
+      }
+
+      async loadAdminMessages() {
+        try {
+          const response = await fetch('/api/messages/conversation/admin');
+          if (response.ok) {
+            const messages = await response.json();
+            this.renderAdminMessages(messages);
+          } else {
+            this.renderMockAdminMessages();
+          }
+        } catch (error) {
+          console.error('Error loading admin messages:', error);
+          this.renderMockAdminMessages();
+        }
+      }
+
+      renderAdminMessages(messages) {
+        const container = document.getElementById('message-messages');
+        if (!container) return;
+
+        if (messages.length === 0) {
+          container.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #666; text-align: center;">
+              <div>
+                <span class="material-icons" style="font-size: 48px; margin-bottom: 10px; display: block;">chat_bubble_outline</span>
+                <p>No messages yet. Start the conversation!</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = messages.map(msg => `
+          <div class="message-bubble ${msg.senderId === 'admin' ? 'received' : 'sent'}">
+            <div class="message-text">${msg.content}</div>
+            <div class="message-time">${new Date(msg.createdAt).toLocaleTimeString('en-US', { 
+              hour: '2-digit', 
+              minute: '2-digit' 
+            })}</div>
+          </div>
+        `).join('');
+
+        // Scroll to bottom
+        container.scrollTop = container.scrollHeight;
+      }
+
+      renderMockAdminMessages() {
+        const mockMessages = [
+          {
+            id: '1',
+            content: 'Hello! How can I help you today?',
+            senderId: 'admin',
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: '2',
+            content: 'I have a question about the upcoming event registration.',
+            senderId: 'user',
+            createdAt: new Date().toISOString()
+          }
+        ];
+
+        this.renderAdminMessages(mockMessages);
+      }
+
+      renderMessages(messages) {
+        const container = document.getElementById('messages-list');
+        if (!container) return;
+
+        if (messages.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state">
+              <span class="material-icons">message</span>
+              <h3>No messages</h3>
+              <p>Start conversations with other members</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = messages.map(message => `
+          <div class="message-item" onclick="dashboard.selectMessage('${message.id}')">
+            <img src="${message.avatar || 'https://i.pravatar.cc/150?img=10'}" alt="${message.name}">
+            <div class="message-info">
+              <h4>${message.name}</h4>
+              <p>${message.lastMessage || 'No messages yet'}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      renderMockMessages() {
+        const mockMessages = [
+          {
+            id: 'admin',
+            name: 'Admin Support',
+            lastMessage: 'How can I help you today?',
+            avatar: 'https://i.pravatar.cc/150?img=10'
+          }
+        ];
+
+        this.renderMessages(mockMessages);
+        this.loadMessageHistory('admin');
+      }
+
+      selectMessage(messageId) {
+        // Remove active class from all message items
+        document.querySelectorAll('.message-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to selected message
+        event.currentTarget.classList.add('active');
+        
+        // Load message history
+        this.loadMessageHistory(messageId);
+      }
+
+      loadMessageHistory(messageId) {
+        if (messageId === 'admin') {
+          this.loadAdminMessages();
+        } else {
+          // Load other message histories
+          const container = document.getElementById('message-messages');
+          if (!container) return;
+
+          const messages = [
+            {
+              id: '1',
+              text: 'Hello! How can I help you today?',
+              sender: 'admin',
+              timestamp: new Date().toLocaleTimeString()
+            },
+            {
+              id: '2',
+              text: 'I have a question about the upcoming event registration.',
+              sender: 'user',
+              timestamp: new Date().toLocaleTimeString()
+            }
+          ];
+
+          container.innerHTML = messages.map(message => `
+            <div class="message-bubble ${message.sender === 'user' ? 'sent' : 'received'}">
+              <div>${message.text}</div>
+              <div class="message-time">${message.timestamp}</div>
+            </div>
+          `).join('');
+
+          // Scroll to bottom
+          container.scrollTop = container.scrollHeight;
+        }
+      }
+
+      initializeMessaging() {
+        const sendBtn = document.getElementById('send-message-btn');
+        const messageInput = document.getElementById('message-input');
+
+        if (sendBtn && messageInput) {
+          sendBtn.addEventListener('click', () => this.sendMessage());
+          messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+              this.sendMessage();
+            }
+          });
+        }
+      }
+
+      sendMessage() {
+        const messageInput = document.getElementById('message-input');
+        const message = messageInput.value.trim();
+        
+        if (!message) return;
+
+        // Add message to UI immediately
+        this.addMessageToUI(message, 'user');
+        
+        // Clear input
+        messageInput.value = '';
+
+        // Send message to server
+        fetch('/api/messages/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            receiverId: 'admin',
+            content: message,
+            messageType: 'text'
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to send message');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Message sent successfully:', data);
+          // Reload messages to get any admin response
+          setTimeout(() => {
+            this.loadAdminMessages();
+          }, 1000);
+        })
+        .catch(error => {
+          console.error('Error sending message:', error);
+          // Show error message
+          this.addMessageToUI('Failed to send message. Please try again.', 'error');
+        });
+      }
+
+      addMessageToUI(message, sender) {
+        const container = document.getElementById('message-messages');
+        if (!container) return;
+
+        const messageElement = document.createElement('div');
+        
+        if (sender === 'error') {
+          messageElement.className = 'message-bubble error';
+          messageElement.style.cssText = `
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            align-self: center;
+            text-align: center;
+          `;
+        } else {
+          messageElement.className = `message-bubble ${sender === 'user' ? 'sent' : 'received'}`;
+        }
+        
+        messageElement.innerHTML = `
+          <div>${message}</div>
+          <div class="message-time">${new Date().toLocaleTimeString()}</div>
+        `;
+
+        container.appendChild(messageElement);
+        container.scrollTop = container.scrollHeight;
+      }
+
+      async loadProfile() {
+        try {
+          const response = await fetch('/api/profile');
+          if (response.ok) {
+            const profile = await response.json();
+            this.renderProfile(profile);
+          } else {
+            this.renderMockProfile();
+          }
+        } catch (error) {
+          console.error('Error loading profile:', error);
+          this.renderMockProfile();
+        }
+      }
+
+      renderProfile(profile) {
+        document.getElementById('profile-name').textContent = profile.name || 'John Doe';
+        document.getElementById('profile-email').textContent = profile.email || 'john.doe@example.com';
+        document.getElementById('profile-role').textContent = profile.role || 'Committee Member';
+        
+        if (profile.avatar) {
+          document.getElementById('profile-avatar').src = profile.avatar;
+        }
+      }
+
+      renderMockProfile() {
+        // Profile is already rendered with mock data in HTML
+        this.updateProfileStats();
+      }
+
+      updateProfileStats() {
+        document.getElementById('profile-events-count').textContent = '12';
+        document.getElementById('profile-committees-count').textContent = '2';
+        document.getElementById('profile-achievements-count').textContent = '5';
+      }
+
+      editProfile() {
+        const form = document.getElementById('profile-form');
+        if (form) {
+          form.style.display = 'block';
+        }
+      }
+
+      cancelEdit() {
+        const form = document.getElementById('profile-form');
+        if (form) {
+          form.style.display = 'none';
+        }
+      }
+
+      saveProfile() {
+        const name = document.getElementById('edit-name').value;
+        const email = document.getElementById('edit-email').value;
+        const phone = document.getElementById('edit-phone').value;
+        const bio = document.getElementById('edit-bio').value;
+
+        // Update profile display
+        document.getElementById('profile-name').textContent = name;
+        document.getElementById('profile-email').textContent = email;
+
+        // Hide form
+        this.cancelEdit();
+
+        // Show success message
+        alert('Profile updated successfully!');
+
+        // Here you would save to the server
+        // fetch('/api/profile', {
+        //   method: 'PUT',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify({ name, email, phone, bio })
+        // });
+      }
+
+      editAvatar() {
+        alert('Avatar editing functionality would be implemented here');
+      }
+
+      openProfile() {
+        this.switchTab('profile');
+      }
+
+      async loadAchievements() {
+        try {
+          const response = await fetch('/api/badges');
+          if (response.ok) {
+            const badges = await response.json();
+            this.renderBadges(badges);
+          } else {
+            this.renderMockBadges();
+          }
+        } catch (error) {
+          console.error('Error loading badges:', error);
+          this.renderMockBadges();
+        }
+      }
+
+      renderBadges(badges) {
+        const container = document.getElementById('badges-grid');
+        if (!container) return;
+
+        const earnedBadges = this.getEarnedBadges();
+
+        container.innerHTML = badges.map(badge => {
+          const isEarned = earnedBadges.includes(badge.id);
+          return `
+            <div class="badge-card ${isEarned ? 'earned' : 'not-earned'}">
+              <div class="badge-icon">
+                <span class="material-icons">${badge.icon}</span>
+              </div>
+              <div class="badge-name">${badge.name}</div>
+              <div class="badge-description">${badge.description}</div>
+              ${isEarned ? 
+                `<div class="badge-date">Earned: ${badge.earnedDate || 'Recently'}</div>` : 
+                `<div class="badge-requirement">${badge.requirement}</div>`
+              }
+            </div>
+          `;
+        }).join('');
+      }
+
+      renderMockBadges() {
+        const mockBadges = [
+          {
+            id: '1',
+            name: 'First Event',
+            description: 'Attended your first event',
+            icon: 'event',
+            requirement: 'Attend any event to earn this badge'
+          },
+          {
+            id: '2',
+            name: 'Committee Member',
+            description: 'Joined your first committee',
+            icon: 'groups',
+            requirement: 'Join any committee to earn this badge'
+          },
+          {
+            id: '3',
+            name: 'Active Participant',
+            description: 'Participated in 5 events',
+            icon: 'star',
+            requirement: 'Attend 5 events to earn this badge'
+          },
+          {
+            id: '4',
+            name: 'Team Player',
+            description: 'Joined 3 committees',
+            icon: 'people',
+            requirement: 'Join 3 committees to earn this badge'
+          },
+          {
+            id: '5',
+            name: 'Social Butterfly',
+            description: 'Sent 10 messages',
+            icon: 'chat',
+            requirement: 'Send 10 messages to earn this badge'
+          },
+          {
+            id: '6',
+            name: 'Profile Complete',
+            description: 'Completed your profile',
+            icon: 'person',
+            requirement: 'Complete all profile fields to earn this badge'
+          }
+        ];
+
+        this.renderBadges(mockBadges);
+      }
+
+      addActivity(message, icon) {
+        const activityList = document.getElementById('activity-list');
+        if (!activityList) return;
+
+        const activityItem = document.createElement('div');
+        activityItem.className = 'activity-item';
+        activityItem.innerHTML = `
+          <span class="material-icons">${icon}</span>
+          <div>
+            <p>${message}</p>
+            <small>Just now</small>
+          </div>
+        `;
+
+        activityList.insertBefore(activityItem, activityList.firstChild);
+
+        // Keep only last 5 activities
+        while (activityList.children.length > 5) {
+          activityList.removeChild(activityList.lastChild);
+        }
+      }
+
+      checkBadgeEligibility() {
+        const earnedBadges = this.getEarnedBadges();
+        const joinedEvents = this.getJoinedEvents();
+        const joinedCommittees = this.getJoinedCommittees();
+
+        // Check for First Event badge
+        if (joinedEvents.length >= 1 && !earnedBadges.includes('1')) {
+          this.awardBadge('1', 'First Event');
+        }
+
+        // Check for Committee Member badge
+        if (joinedCommittees.length >= 1 && !earnedBadges.includes('2')) {
+          this.awardBadge('2', 'Committee Member');
+        }
+
+        // Check for Active Participant badge
+        if (joinedEvents.length >= 5 && !earnedBadges.includes('3')) {
+          this.awardBadge('3', 'Active Participant');
+        }
+
+        // Check for Team Player badge
+        if (joinedCommittees.length >= 3 && !earnedBadges.includes('4')) {
+          this.awardBadge('4', 'Team Player');
+        }
+      }
+
+      awardBadge(badgeId, badgeName) {
+        const earnedBadges = this.getEarnedBadges();
+        if (!earnedBadges.includes(badgeId)) {
+          earnedBadges.push(badgeId);
+          localStorage.setItem('earnedBadges', JSON.stringify(earnedBadges));
+          this.updateBadgeCount();
+          this.addActivity(`Earned "${badgeName}" badge!`, 'emoji_events');
+          this.loadAchievements(); // Refresh badges display
+        }
+      }
+    }
+
+    // Initialize dashboard when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      window.dashboard = new MemberDashboard();
+    });
+  </script>
+</body>
+</html>

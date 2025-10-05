@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Verification - POP N' PLAN</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <script src="verification.js" defer></script> 
+
+  <style>
+    /* ----------------------------------- */
+    /* THEME VARIABLES (From hack.html) */
+    /* ----------------------------------- */
+    :root {
+      --accent-1: #6c5ce7; /* Primary Purple */
+      --accent-2: #ff6ec4; /* Secondary Pink */
+      --bg-1: #f7f5ff; /* Light Background */
+      --text-primary: #1C1C1E; /* Dark Text */
+      --text-secondary: #3A3A3C;
+      --surface: #FFFFFF; /* Card Background */
+      --success: #34c759; /* iOS Green */
+      --error: #ff3b30;  /* iOS Red */
+      --gray-light: #e5e5ea;
+      --border-radius-lg: 20px;
+      --border-radius-sm: 8px;
+      --shadow-md: 0 10px 30px rgba(108, 92, 231, 0.15);
+      --transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'SF Pro Display', sans-serif;
+      background: linear-gradient(135deg, var(--bg-1) 0%, var(--surface) 100%);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    /* ----------------------------------- */
+    /* CARD LAYOUT (iOS Style) */
+    /* ----------------------------------- */
+    .verification-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+    }
+
+    .verification-card {
+      max-width: 450px;
+      width: 100%;
+      background-color: var(--surface);
+      border-radius: var(--border-radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 40px;
+      text-align: center;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    /* Brand Badge */
+    .brand-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+    }
+
+    .brand-text {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    h1 {
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .verification-note {
+        font-size: 15px;
+        color: var(--text-secondary);
+        margin-bottom: 30px;
+        line-height: 1.6;
+        padding: 0 10px;
+    }
+
+    /* ----------------------------------- */
+    /* CODE INPUTS */
+    /* ----------------------------------- */
+    .code-inputs {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .code-inputs input {
+      width: 100%;
+      max-width: 50px;
+      height: 60px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      border: 2px solid var(--gray-light);
+      border-radius: var(--border-radius-sm);
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      background-color: var(--bg-1);
+    }
+
+    .code-inputs input:focus {
+      border-color: var(--accent-1);
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+      background-color: var(--surface);
+    }
+    
+    /* ----------------------------------- */
+    /* BUTTONS */
+    /* ----------------------------------- */
+    .btn-primary {
+      padding: 14px 20px;
+      border-radius: 28px; 
+      font-size: 17px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: var(--transition);
+      border: none;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-top: 20px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: white;
+      box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(108, 92, 231, 0.4);
+    }
+
+    .resend-link {
+        color: var(--text-secondary);
+        font-size: 14px;
+        margin-top: 20px;
+        display: block;
+    }
+    
+    .resend-link a {
+        color: var(--accent-1);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    .resend-link a:hover {
+        color: var(--accent-2);
+        text-decoration: underline;
+    }
+
+    /* Message styling for success/error */
+    .message {
+        padding: 10px;
+        border-radius: var(--border-radius-sm);
+        margin-top: 15px;
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .message.error {
+        background-color: rgba(255, 59, 48, 0.1);
+        color: var(--error);
+    }
+
+    .message.success {
+        background-color: rgba(52, 199, 89, 0.1);
+        color: var(--success);
+    }
+    
+    @media (max-width: 500px) {
+        .verification-card {
+            padding: 30px 20px;
+        }
+        .code-inputs input {
+            height: 50px;
+            font-size: 20px;
+        }
+    }
+  </style>
+</head>
+<body>
+  <div class="verification-container">
+    <div class="verification-card">
+      <div class="brand-badge">
+        <img src="logo.png" class="brand-logo" alt="POP N' PLAN Logo">
+        <span class="brand-text">POP N' PLAN</span>
+      </div>
+      <h1>Verify Your Email</h1>
+      <p class="verification-note">
+        We've sent a 6-digit verification code to the email address you provided. 
+        Please enter the code below to complete your registration.
+      </p>
+      
+      <form id="verificationForm">
+        <div class="code-inputs">
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+          <input type="text" maxlength="1" pattern="[0-9]" required>
+        </div>
+        
+        <button type="submit" class="btn-primary">Verify Account</button>
+      </form>
+      
+      <p class="resend-link">
+        Didn't receive the code? <a href="#" id="resendCode">Resend Code</a>
+      </p>
+      
+      <p class="message" id="messageStatus"></p> 
+      
+    </div>
+  </div>
+</body>
+</html>
