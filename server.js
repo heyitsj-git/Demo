@@ -257,9 +257,9 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
-// --- Fallback for other routes ---
+// --- Fallback for other routes: serve index.html as start page ---
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'login.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // --- Database Connection ---
